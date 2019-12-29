@@ -17,11 +17,10 @@
 package io.pivotal.literx;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import io.pivotal.literx.domain.User;
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
-import io.reactivex.Single;
+import io.reactivex.*;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -43,48 +42,48 @@ public class Part09Adapt {
 
 	// TODO Adapt Flux to RxJava Flowable
 	Flowable<User> fromFluxToFlowable(Flux<User> flux) {
-		return null;
+		return Flowable.fromIterable(flux.toIterable());
 	}
 
 	// TODO Adapt RxJava Flowable to Flux
 	Flux<User> fromFlowableToFlux(Flowable<User> flowable) {
-		return null;
+		return Flux.fromIterable(flowable.blockingIterable());
 	}
 
 //========================================================================================
 
 	// TODO Adapt Flux to RxJava Observable
 	Observable<User> fromFluxToObservable(Flux<User> flux) {
-		return null;
+		return Observable.fromIterable(flux.toIterable());
 	}
 
 	// TODO Adapt RxJava Observable to Flux
 	Flux<User> fromObservableToFlux(Observable<User> observable) {
-		return null;
+		return Flux.fromIterable(observable.blockingIterable());
 	}
 
 //========================================================================================
 
 	// TODO Adapt Mono to RxJava Single
 	Single<User> fromMonoToSingle(Mono<User> mono) {
-		return null;
+		return Single.create(singleEmitter -> singleEmitter.onSuccess(mono.block()));
 	}
 
 	// TODO Adapt RxJava Single to Mono
 	Mono<User> fromSingleToMono(Single<User> single) {
-		return null;
+		return Mono.just(single.blockingGet());
 	}
 
 //========================================================================================
 
 	// TODO Adapt Mono to Java 8+ CompletableFuture
 	CompletableFuture<User> fromMonoToCompletableFuture(Mono<User> mono) {
-		return null;
+		return CompletableFuture.completedFuture(mono.block());
 	}
 
 	// TODO Adapt Java 8+ CompletableFuture to Mono
 	Mono<User> fromCompletableFutureToMono(CompletableFuture<User> future) {
-		return null;
+		return Mono.just(future.join());
 	}
 
 }
